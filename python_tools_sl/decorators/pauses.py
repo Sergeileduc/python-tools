@@ -2,6 +2,7 @@ import time
 import asyncio
 import functools
 
+
 def with_pause(seconds=2, message=None):
     def decorator(func):
         @functools.wraps(func)
@@ -13,6 +14,7 @@ def with_pause(seconds=2, message=None):
         return wrapper
     return decorator
 
+
 def with_pause_async(seconds=2, message=None):
     def decorator(func):
         @functools.wraps(func)
@@ -23,4 +25,3 @@ def with_pause_async(seconds=2, message=None):
             return result
         return wrapper
     return decorator
-
