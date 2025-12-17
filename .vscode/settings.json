@@ -2,7 +2,8 @@
     "conventionalCommits.scopes": [
         "decorators",
         "utils",
-        "parsers"
+        "parsers",
+        "logging"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true
