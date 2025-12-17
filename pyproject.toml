@@ -1,0 +1,10 @@
+[project]
+name = "python-tools-sl"
+version = "0.1.0"
+description = "Petits utilitaires Python (décorateurs, helpers, etc.)"
+authors = [{name="Serge"}]
+dependencies = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["python_tools_sl*"]
