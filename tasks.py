@@ -58,6 +58,13 @@ def get_index_path():
 def lint(c):
     """flake8 - static check for python files"""
     c.run("flake8")
+    c.run("pre-commit run --all-files")
+
+
+@task
+def mypy(c):
+    """run mypy on package."""
+    c.run("mypy")
 
 
 @task
