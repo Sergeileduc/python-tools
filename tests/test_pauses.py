@@ -1,5 +1,7 @@
 import time
+
 import pytest
+
 from python_tools_sl.decorators.pauses import with_pause, with_pause_async
 
 

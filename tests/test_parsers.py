@@ -1,6 +1,8 @@
-import pytest
 import datetime
-from python_tools_sl.parsing import parse_json_safe, parse_date, parse_bool, slugify
+
+import pytest
+
+from python_tools_sl.parsing import parse_bool, parse_date, parse_json_safe, slugify
 
 
 def test_parse_json_safe_valid():
