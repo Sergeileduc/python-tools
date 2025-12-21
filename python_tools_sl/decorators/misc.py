@@ -1,6 +1,6 @@
 import time
 from functools import wraps
-from typing import Callable, ParamSpec, TypeVar, Dict, Tuple, Type, Any
+from typing import Any, Callable, Dict, ParamSpec, Tuple, Type, TypeVar
 
 from python_tools_sl.utils.formatting import format_duration
 
