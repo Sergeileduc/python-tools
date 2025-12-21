@@ -34,7 +34,7 @@ def chunks(iterable: Iterable[T], size: int) -> Iterator[List[T]]:
 
 
 @contextmanager
-def timer(name: str = "block"):
+def timer(name: str = "block"):  # type: ignore
     """
     Mesure le temps d'exécution d'un bloc de code.
 
