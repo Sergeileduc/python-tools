@@ -1,14 +1,12 @@
 import time
 from functools import wraps
-from typing import Any, Callable, Dict, ParamSpec, Tuple, Type, TypeVar
+from typing import Any, Callable, Dict, Tuple, Type
 
 from python_tools_sl.utils.formatting import format_duration
-
-P = ParamSpec("P")  # capture la signature des paramètres
-R = TypeVar("R")  # capture le type de retour
+from python_tools_sl.utils.typing_helpers import Decorator, P, R
 
 
-def timeit(prefix: str = "[TIMEIT]"):
+def timeit(prefix: str = "[TIMEIT]") -> Decorator:
     """
     Décorateur paramétrable qui mesure et affiche le temps d'exécution d'une fonction.
 
@@ -47,7 +45,7 @@ def retry(
     max_attempts: int = 3,
     delay: float = 1.0,
     exceptions: Tuple[Type[Exception], ...] = (Exception,),
-):
+) -> Decorator:
     """
     Décorateur qui réessaie l'exécution d'une fonction en cas d'exception.
 
