@@ -2,7 +2,7 @@ import time
 
 import pytest
 
-from python_tools_sl.decorators.pauses import with_pause, with_pause_async
+from python_tools_sl.decorators import with_pause, with_pause_async
 
 
 def test_pause_decorator(monkeypatch):

@@ -1,9 +1,44 @@
 import time
 from functools import wraps
-from typing import Any, Callable, Dict, Tuple, Type
+from typing import Any, Callable, Dict, Optional, Tuple, Type
 
 from python_tools_sl.utils.formatting import format_duration
 from python_tools_sl.utils.typing_helpers import Decorator, P, R
+
+
+def with_pause(seconds: int | float = 2, message: Optional[str] = None) -> Decorator:
+    """
+    Décorateur paramétrable qui ajoute une pause après l'exécution d'une fonction.
+
+    Ce décorateur est utile pour éviter les limitations de débit, les timeouts API,
+    ou pour espacer volontairement des appels successifs dans un contexte synchrone.
+
+    Args:
+        seconds (int | float, optionnel): Durée de la pause en secondes.
+            Par défaut 2.
+        message (str, optionnel): Message affiché avant la pause.
+            Par défaut, un message générique indiquant la durée de la pause.
+
+    Returns:
+        Decorator: Un décorateur qui peut être appliqué à une fonction.
+
+    Exemple:
+        @with_pause(seconds=1.5)
+        def fetch_data(url: str) -> str:
+            return http_get(url)
+    """
+
+    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+        @wraps(func)
+        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+            result = func(*args, **kwargs)
+            print(message or f"⏸️ Pause de {seconds}s pour éviter les timeouts...")
+            time.sleep(seconds)
+            return result
+
+        return wrapper
+
+    return decorator
 
 
 def timeit(prefix: str = "[TIMEIT]") -> Decorator:
@@ -15,7 +50,7 @@ def timeit(prefix: str = "[TIMEIT]") -> Decorator:
             Par défaut "[TIMEIT]".
 
     Returns:
-        Callable: Un décorateur qui peut être appliqué à une fonction pour chronométrer son exécution.
+        Decorator: Un décorateur qui peut être appliqué à une fonction.
 
     Exemple:
         @timeit()
@@ -56,7 +91,7 @@ def retry(
             un nouvel essai. Par défaut, toutes les exceptions (`Exception`).
 
     Returns:
-        Callable[P, R]: La fonction décorée, avec la même signature et type de retour.
+        Decorator: Un décorateur qui peut être appliqué à une fonction.
 
     Exemple:
         @retry(max_attempts=5, delay=0.5, exceptions=(ValueError,))
@@ -115,6 +150,13 @@ def memoize(func: Callable[P, R]) -> Callable[P, R]:
 
 
 if __name__ == "__main__":
+    # TIMEIT
+    @timeit()
+    def long(a: int, b: int) -> int:
+        r = a + b
+        time.sleep(1)
+        return r
+
     # RETRY
     @retry(max_attempts=3, delay=0.5, exceptions=(ZeroDivisionError,))
     def fragile_division(a: int, b: int) -> float:
@@ -126,13 +168,6 @@ if __name__ == "__main__":
         print(fragile_division(10, 0))  # -> relance ZeroDivisionError après 3 tentatives
     except ZeroDivisionError:
         print("ok, Zero Division Error Impossible. Nombre d'essai max atteing")
-
-    # TIMEIT
-    @timeit()
-    def long(a: int, b: int) -> int:
-        r = a + b
-        time.sleep(1)
-        return r
 
     print(long(1, 3))
 
