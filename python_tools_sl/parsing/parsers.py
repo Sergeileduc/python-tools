@@ -1,22 +1,41 @@
 import datetime
 import json
 import re
-from typing import cast
+from typing import Any, cast
+
 from python_tools_sl.utils.typing_helpers import JSONType
 
 
-def parse_json_safe(text: str) -> JSONType:
+def is_json_type(value: Any) -> bool:
+    """Return True if the value matches the JSONType structure."""
+    if value is None:
+        return True
+
+    if isinstance(value, (str, int, float, bool)):
+        return True
+
+    if isinstance(value, list):
+        return all(is_json_type(item) for item in value)
+
+    if isinstance(value, dict):
+        return all(isinstance(k, str) and is_json_type(v) for k, v in value.items())
+
+    return False
+
+
+def parse_json_safe(text: str) -> JSONType | None:
     """Parse une chaîne JSON en objet Python.
 
     Essaie de convertir la chaîne en JSON. Si la chaîne est valide,
-    retourne l'objet Python correspondant (dict ou list). Si la chaîne
-    n'est pas un JSON valide, retourne None au lieu de lever une exception.
+    retourne l'objet Python correspondant (dict, list, str, int, float,
+    bool ou None). Si la chaîne n'est pas un JSON valide, retourne None
+    au lieu de lever une exception.
 
     Args:
         text (str): Chaîne représentant un objet JSON.
 
     Returns:
-        dict | list | None: Objet Python si le JSON est valide, sinon None.
+        JSONType | None: Objet Python si le JSON est valide, sinon None.
     """
     try:
         return cast(JSONType, json.loads(text))
