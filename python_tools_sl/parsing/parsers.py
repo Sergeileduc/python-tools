@@ -1,9 +1,11 @@
 import datetime
 import json
 import re
+from typing import cast
+from python_tools_sl.utils.typing_helpers import JSONType
 
 
-def parse_json_safe(text: str) -> dict | list | None:
+def parse_json_safe(text: str) -> JSONType:
     """Parse une chaîne JSON en objet Python.
 
     Essaie de convertir la chaîne en JSON. Si la chaîne est valide,
@@ -17,7 +19,7 @@ def parse_json_safe(text: str) -> dict | list | None:
         dict | list | None: Objet Python si le JSON est valide, sinon None.
     """
     try:
-        return json.loads(text)
+        return cast(JSONType, json.loads(text))
     except json.JSONDecodeError:
         return None
 
