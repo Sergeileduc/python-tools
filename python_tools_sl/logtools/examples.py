@@ -1,3 +1,5 @@
+from typing import Any
+
 from .config import setup_logging
 from .context import log_section
 from .decorators import log_call
@@ -8,9 +10,9 @@ setup_logging(level="DEBUG")
 
 
 @log_call
-def add(a, b):
+def add(a: Any, b: Any) -> Any:
     return a + b
 
 
 with log_section("Demo ADD"):
-    print(add(2, 3))
+    add(2, 3)
