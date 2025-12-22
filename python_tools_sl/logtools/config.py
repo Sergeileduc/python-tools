@@ -1,7 +1,9 @@
 import logging
 
 
-def setup_logging(level="INFO", to_file=False, to_console=True, filename="app.log"):
+def setup_logging(
+    level="INFO", to_file: bool = False, to_console: bool = True, filename="app.log"
+) -> None:
     """Configure global logging."""
     handlers = []
     if to_console:
